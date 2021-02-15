@@ -13,6 +13,18 @@ npm start
 npm start:server 
 ```
 
+# Testing
+```shell script
+# Unit tests
+npm run test:ci
+
+# E2E tests (only once per server start - depends on state)
+./test.sh
+
+# Lint
+npm run lint
+```
+
 # Configuration
 Look for a configuration parameters inside `src/system/config/config.static.ts`.
 ```typescript
@@ -65,3 +77,18 @@ curl -sS http://localhost:5000/resourceA/status
   "messagesLeft": 0 // tasks left to be processed
 }
 ```
+
+# Solution Future and TODOs
+* Docker run command not checked (used Podman on Fedora Linux)
+* Service should have authorization and access separation. 
+* One test has been written, just to set up testing. 
+* Existing test is only a unit one. All deps are mocked. All other test types needed (API, integration).
+* A little bash E2E test added (such a fun) `./test.sh`
+* Implemented status endpoint, so it's easy to write E2E tests.
+* Used a queue for publishing new resources. It's not the best solution, but due to the complexity, I didn't want to introduce another DB. 
+* For future improvements: I would use NestJS, plus DI mechanism (instead of putting services together in `server.ts`).
+* Config should be probably placed in the rootDir. I know, but didn't want to implement type checks on it.
+* If we want to change command dynamically, we can extend `ResourceUpdateRequest` and add it's support in `ExecutionProcessor`
+* Use topics instead of queues would make service scalable :) 
+* Sleep function in `QueueAdapter` is not the best idea. It works, but I would be better, if it would be the part of `amqplib`.
+* Above is also a suspect for a slight mem leak (still need to be investigated).

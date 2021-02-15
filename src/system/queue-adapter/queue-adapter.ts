@@ -6,6 +6,8 @@ import { configService } from '../config/config.service';
 import { appLogger } from '../logger/app-logger';
 
 export class QueueAdapter {
+  private static readonly messagesWaitingTime = 100;
+
   private channel: Channel;
   private initiation = this.initConnection();
 
@@ -34,12 +36,23 @@ export class QueueAdapter {
     return messages.asObservable();
   }
 
+  async getNextCorrectMessage(
+    queueName: string,
+    ack?: boolean
+  ): Promise<string> {
+    let event = await this.getNextMessage(queueName, ack);
+    while(!event) {
+      await this.sleep(QueueAdapter.messagesWaitingTime);
+      event = await this.getNextMessage(queueName, ack);
+    }
+    return event;
+  }
+
   async getNextMessage(
     queueName: string,
     ack?: boolean
   ): Promise<string | undefined> {
     await this.initiation;
-    await this.channel.assertQueue(queueName);
     const msg = await this.channel.get(queueName);
     if (msg) {
       const messageBody = msg.content.toString();
@@ -66,5 +79,9 @@ export class QueueAdapter {
     } catch (e) {
       appLogger.fatal('Couldn\'t establish mqtt connection');
     }
+  }
+
+  private sleep(time: number): Promise<void> {
+    return new Promise((r) => setTimeout(r, time));
   }
 }

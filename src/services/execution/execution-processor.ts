@@ -53,7 +53,7 @@ export class ExecutionProcessor {
     this.processingActive = true;
   }
 
-  private supplyMissingWorkers(newConcurrency: number) {
+  private supplyMissingWorkers(newConcurrency: number): void {
     const previousConcurrency = this.concurrency;
     this.concurrency = newConcurrency;
     for (let i = previousConcurrency; i < newConcurrency; i++) {
@@ -80,16 +80,10 @@ export class ExecutionProcessor {
         filter(processNo => this.filterRedundantWorkers(processNo))
       )
       .subscribe(async (processId) => {
-        const msg = await this.queueAdapter.getNextMessage(this.queueId, true);
-        msg === undefined
-          ? await this.sleep(100)
-          : await this.process(processId);
+        await this.queueAdapter.getNextCorrectMessage(this.queueId, true);
+        await this.process(processId);
         this.freeProcess$.next(processId);
       });
-  }
-
-  private sleep(time: number): Promise<void> {
-    return new Promise((r) => setTimeout(r, time));
   }
 
   private logOutput(stream: string, processId: number, msg: string): void {
