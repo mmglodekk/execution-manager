@@ -1,0 +1,13 @@
+{
+  "restartable": "rs",
+  "verbose": true,
+  "execMap_": {
+    "js": "node --harmony"
+  },
+  "exec": "npm run start:server",
+  "delay": 2500,
+  "watch": [
+    "src/"
+  ],
+  "ext": "ts,json"
+}
