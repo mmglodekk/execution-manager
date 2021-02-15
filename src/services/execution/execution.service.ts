@@ -30,7 +30,7 @@ export class ExecutionService {
     this.resourcesService
       .getResourceChangesStream()
       .subscribe(resource => {
-        this.updateAndProcess(resource.id, resource.concurrentExecutions)
+        this.updateAndProcess(resource.id, resource.concurrentExecutions);
       });
   }
 

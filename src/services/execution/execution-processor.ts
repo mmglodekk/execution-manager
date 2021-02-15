@@ -1,10 +1,11 @@
 import { Subject } from 'rxjs';
 import { exec } from 'child_process';
+import { filter } from 'rxjs/operators';
+import { promisify } from 'util';
+
 import { QueueAdapter } from '../../system/queue-adapter/queue-adapter';
 import { configService } from '../../system/config/config.service';
 import { appLogger } from '../../system/logger/app-logger';
-import { filter } from 'rxjs/operators';
-import { promisify } from 'util';
 import { ExecutionStatistics } from './execution-statistics.interface';
 
 const execPromise = promisify(exec);
@@ -39,7 +40,7 @@ export class ExecutionProcessor {
       currentCommand: this.command,
       processing: this.processingActive,
       tasksLeft: queueStats.messageCount
-    }
+    };
   }
 
   updateSettings(concurrency: number, command: string): void {
@@ -56,7 +57,7 @@ export class ExecutionProcessor {
     const previousConcurrency = this.concurrency;
     this.concurrency = newConcurrency;
     for (let i = previousConcurrency; i < newConcurrency; i++) {
-      appLogger.info(`Adding new worker (${this.resourceId}, ${i})`)
+      appLogger.info(`Adding new worker (${this.resourceId}, ${i})`);
       this.freeProcess$.next(i);
     }
   }
@@ -101,7 +102,7 @@ export class ExecutionProcessor {
   private filterRedundantWorkers(processId: number): boolean {
     const isUsable = processId < this.concurrency;
     if (!isUsable) {
-      appLogger.info(`Removing redundant worker (${this.resourceId}, ${processId})`)
+      appLogger.info(`Removing redundant worker (${this.resourceId}, ${processId})`);
     }
     return isUsable;
   }

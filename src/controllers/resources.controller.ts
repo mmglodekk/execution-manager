@@ -1,4 +1,5 @@
 import { Express, Request, Response } from 'express';
+
 import { ExecutionService } from '../services/execution/execution.service';
 import { appLogger } from '../system/logger/app-logger';
 import { ResourcesService } from '../services/resources/resources.service';
@@ -65,6 +66,6 @@ export class ResourcesController {
 
   public static isCorrectUpdatePayload(requestBody: unknown): requestBody is ResourceUpdateRequest {
     return typeof requestBody === 'object'
-      && typeof (requestBody as ResourceUpdateRequest).concurrency === "number";
+      && typeof (requestBody as ResourceUpdateRequest).concurrency === 'number';
   }
 }

@@ -1,6 +1,7 @@
 import { Express, Request, Response } from 'express';
-import { appLogger } from '../system/logger/app-logger';
 import { NextFunction } from 'express-serve-static-core';
+
+import { appLogger } from '../system/logger/app-logger';
 
 export class ErrorsController {
   constructor(

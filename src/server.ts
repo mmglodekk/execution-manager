@@ -1,11 +1,12 @@
 import express, { Express } from 'express';
+import bodyParser from 'body-parser';
+
 import { ResourcesController } from './controllers/resources.controller';
 import { ExecutionService } from './services/execution/execution.service';
 import { appLogger, pinoHttp } from './system/logger/app-logger';
 import { configService } from './system/config/config.service';
 import { QueueAdapter } from './system/queue-adapter/queue-adapter';
 import { ResourcesService } from './services/resources/resources.service';
-import bodyParser from 'body-parser';
 import { ErrorsController } from './controllers/errors.controller';
 import { ExecutionProcessorFactory } from './services/execution/execution-processor.factory';
 

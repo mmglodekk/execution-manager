@@ -1,6 +1,7 @@
+import { Observable, ReplaySubject } from 'rxjs';
+
 import { configService } from '../../system/config/config.service';
 import { QueueAdapter } from '../../system/queue-adapter/queue-adapter';
-import { Observable, ReplaySubject } from 'rxjs';
 import { ResourceEnvelope } from './resources.interface';
 import { appLogger } from '../../system/logger/app-logger';
 
@@ -36,7 +37,7 @@ export class ResourcesService {
   private registerDefinedResources(): void {
     this.initialResources.forEach(id => {
       const concurrentExecutions = this.initialExecutions;
-      this.resourcesQueue.next({ id, concurrentExecutions })
+      this.resourcesQueue.next({ id, concurrentExecutions });
     });
   }
 
@@ -53,7 +54,7 @@ export class ResourcesService {
       this.resourcesQueue.next({
         id: parsed.id,
         concurrentExecutions: parsed.concurrentExecutions
-      })
+      });
     } catch (e) {
       appLogger.error('Cannot parse incoming resources message', e);
     }
@@ -64,7 +65,7 @@ export class ResourcesService {
     const valid = typeof parsed.id === 'string'
       && typeof parsed.concurrentExecutions === 'number';
     if (!valid) {
-      throw new Error('Resource message fields incorrect!')
+      throw new Error('Resource message fields incorrect!');
     }
     return parsed;
   }

@@ -1,6 +1,7 @@
+import { Subject } from 'rxjs';
+
 import { ExecutionService } from './execution.service';
 import { ResourcesService } from '../resources/resources.service';
-import { Subject } from 'rxjs';
 import { QueueAdapter } from '../../system/queue-adapter/queue-adapter';
 import { ExecutionProcessorFactory } from './execution-processor.factory';
 import { ResourceEnvelope } from '../resources/resources.interface';

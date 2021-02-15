@@ -1,8 +1,9 @@
-import { configService } from '../config/config.service';
 import amqplib, { Channel } from 'amqplib';
-import { appLogger } from '../logger/app-logger';
-import { Observable, Subject } from 'rxjs';
 import { Replies } from 'amqplib/properties';
+import { Observable, Subject } from 'rxjs';
+
+import { configService } from '../config/config.service';
+import { appLogger } from '../logger/app-logger';
 
 export class QueueAdapter {
   private channel: Channel;
@@ -61,7 +62,7 @@ export class QueueAdapter {
       const mqttHost = configService.get('mqttHost');
       const connection = await amqplib.connect(mqttHost);
       this.channel = await connection.createChannel();
-      appLogger.info('Successfully connected to RabbitMQ')
+      appLogger.info('Successfully connected to Queue');
     } catch (e) {
       appLogger.fatal('Couldn\'t establish mqtt connection');
     }

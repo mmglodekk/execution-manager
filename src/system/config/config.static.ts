@@ -17,4 +17,4 @@ export const configStatic: AppConfig = {
     'resourceB',
     '123123'
   ]
-}
+};
