@@ -92,3 +92,4 @@ curl -sS http://localhost:5000/resourceA/status
 * Use topics instead of queues would make service scalable :) 
 * Sleep function in `QueueAdapter` is not the best idea. It works, but I would be better, if it would be the part of `amqplib`.
 * Above is also a suspect for a slight mem leak (still need to be investigated).
+* I would restrict execution pool, not to starve the host as well.
